@@ -1,61 +1,53 @@
 package com.example.csvtosql.repository;
 
-import com.example.csvtosql.entity.TableInfo;
-import com.example.csvtosql.entity.TableInfoRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
 @Repository
 public class DataRepository {
 
-    private String port = "3306";
-    private String dbName = "csv2sql";
-    private String userName = "root";
-    private String password = "spring";
-//    @Value("${spring.datasource.url}")
-//    private String url;
-//
-//    @Value("${spring.datasource.username}")
-//    private String username;
-//
-//    @Value("${spring.datasource.password}")
-//    private String password;
+    private static String url;
+    private static String userName;
+    private static String password;
+    private static String driverName;
 
-    private Connection con;
-    private ResultSet rs;
-    private Statement stmt;
+    private static Connection con;
+    private static ResultSet rs;
+    private static Statement stmt;
 
     //기본 생성자(Default Constructor)
-    public DataRepository() throws SQLException, ClassNotFoundException {
+    public DataRepository() {
+    }
+
+
+    @Autowired
+    public DataRepository(
+            @Value("${spring.datasource.url}") String url,
+            @Value("${spring.datasource.username}") String userName,
+            @Value("${spring.datasource.password}") String password,
+            @Value("${spring.datasource.driver-class-name}") String driverName) throws SQLException, ClassNotFoundException {
+
+        this.url= url;
+        this.userName = userName;
+        this.password = password;
+        this.driverName = driverName;
         connect();
     }
 
-    //Overloading Constructor
-    public DataRepository(String port,String dbName,String userName, String password) throws ClassNotFoundException, SQLException {
-        this.port = port;
-        this.dbName= dbName;
-        this.userName = userName;
-        this.password = password;
-        connect();
-    }
 
 
     //MySQL DB Connect
     private void connect() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/" + dbName + "?serverTimezone=Asia/Seoul", userName, password);
-//        con = DriverManager.getConnection(url, username, password);
+        Class.forName(this.driverName);
+        con = DriverManager.getConnection(url, userName, password);
     }
 
 
@@ -107,10 +99,6 @@ public class DataRepository {
     public JSONArray findAll(String tableName) throws SQLException, ClassNotFoundException, JSONException {
         JSONArray jsonArray = new JSONArray();
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-//        con = DriverManager.getConnection(url, username, password);
-        con = DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/" + dbName + "?serverTimezone=Asia/Seoul", userName, password);
-
         stmt = con.createStatement();
 
         String sql = "SELECT * FROM ";
@@ -137,9 +125,6 @@ public class DataRepository {
     public JSONArray findByColNum(String tableName, Map<String, Object> queryMap) throws SQLException, ClassNotFoundException, JSONException {
         JSONArray jsonArray = new JSONArray();
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-//        con = DriverManager.getConnection(url, username, password);
-        con = DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/" + dbName + "?serverTimezone=Asia/Seoul", userName, password);
         stmt = con.createStatement();
 
         Integer i = 0;

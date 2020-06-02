@@ -14,8 +14,8 @@ import java.util.Scanner;
 @SpringBootApplication
 public class CsvtosqlApplication {
 
-    private static String fileFullName = "Z:\\userid_abc.csv";
-    private static String fileName = "userid_abc.csv";
+    private static String fileFullName = "abcd.csv";
+    private static String fileName = "abcd.csv";
     public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException, URISyntaxException {
         
         SpringApplication.run(CsvtosqlApplication.class, args);
@@ -35,8 +35,8 @@ public class CsvtosqlApplication {
 //        }
 //
 //        String fileFullName = path + fileName;
-//
-//        System.out.println(fileName);
+
+        System.out.println(fileName);
 
         //테이블 이름
         String tableName = fileName.substring(0, fileName.length() - 4);
@@ -79,7 +79,7 @@ public class CsvtosqlApplication {
         //TableInfo 속성 값 추가
         String userId = "user1";
         TableInfoService idb = new TableInfoService();
-        idb.addTableInfoData(userId,tableName);
+        idb.addTableInfoDatas(userId,tableName);
 
 //        idb.addTableInfoData(userId,tableName);
     }
