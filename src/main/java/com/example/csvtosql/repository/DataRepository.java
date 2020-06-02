@@ -1,18 +1,22 @@
 package com.example.csvtosql.repository;
 
+import com.example.csvtosql.entity.TableInfo;
+import com.example.csvtosql.entity.TableInfoRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
-@Configuration
+@Repository
 public class DataRepository {
 
     private String port = "3306";
@@ -68,16 +72,6 @@ public class DataRepository {
         stmt.execute(sqlCreate);
     }
 
-    //헤더 테이블 생성
-    public void createHeaderTable(String headerTableName) throws SQLException {
-        String sqlCreate = "CREATE TABLE IF NOT EXISTS " + headerTableName + " (ID int NOT NULL AUTO_INCREMENT, Header VARCHAR(255) NOT NULL ,";
-        sqlCreate += "PRIMARY KEY (ID));";
-        Statement stmt = con.createStatement();
-        stmt.execute(sqlCreate);
-
-    }
-
-
 
     //테이블 속성 추가
     public void addData(String tableName, String columns, String values) throws SQLException {
@@ -91,18 +85,6 @@ public class DataRepository {
         System.out.println("Success Add Data");
     }
 
-    //헤더 테이블 속성 추가
-    public void addHeaderData(String tableName, String columns) throws SQLException {
-        String[] cols = columns.split(",");
-
-
-        for (int i = 0; i < cols.length; i++) {
-            String item = cols[i];
-            String query = "INSERT INTO " + tableName + "(ID,Header)" + " VALUES (NULL," + '"' + item + '"' + ");";
-            Statement stm = (Statement) con.createStatement();
-            stm.executeUpdate(query);
-        }
-    }
 
 
     //데이터 타입 설정

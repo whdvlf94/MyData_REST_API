@@ -12,15 +12,19 @@ import java.util.Date;
 public class TableInfo implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ID;
 
-    @Column(nullable = false, length = 50)
+    @Column
     private String userId;
 
     @Column(nullable = false, length = 50)
     private String tableName;
 
+    @Column(nullable = false, length = 150)
+    private String url;
+
     @Column(nullable = false, length = 50)
-    private Date CreateTableTime;
+    private String createTableTime;
+
 }
