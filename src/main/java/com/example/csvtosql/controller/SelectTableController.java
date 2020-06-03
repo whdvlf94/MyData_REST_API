@@ -1,6 +1,6 @@
 package com.example.csvtosql.controller;
 
-import com.example.csvtosql.repository.DataRepository;
+import com.example.csvtosql.repository.SqlToJsonRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/{tableName}")
-public class DataController {
+public class SelectTableController {
 
 
     @Autowired
-    private DataRepository repository;
+    private SqlToJsonRepository repository;
 
 
     //사용자 전체 조회

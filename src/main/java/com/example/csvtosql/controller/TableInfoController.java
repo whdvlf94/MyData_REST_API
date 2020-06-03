@@ -1,6 +1,6 @@
 package com.example.csvtosql.controller;
 
-import com.example.csvtosql.entity.TableInfo;
+import com.example.csvtosql.entity.TableInfoEntity;
 import com.example.csvtosql.entity.TableInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ public class TableInfoController {
     //테이블 정보 조회
     @GetMapping(value = "{userid}/tableinfo", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<TableInfo> getTableInfo(@PathVariable String userid) {
+    public List<TableInfoEntity> getTableInfo(@PathVariable String userid) {
         return repository.findByUserId(userid);
     }
 

@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TableInfoRepository extends JpaRepository<TableInfo,Long> {
+public interface TableInfoRepository extends JpaRepository<TableInfoEntity,Long> {
 
-    List<TableInfo> findByUserId(String userid);
+    List<TableInfoEntity> findByUserId(String userid);
 }
