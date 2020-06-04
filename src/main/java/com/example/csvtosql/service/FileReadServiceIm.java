@@ -9,8 +9,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 @Service
@@ -20,6 +18,12 @@ public class FileReadServiceIm implements FileReadService {
 
     private Path root = Paths.get("C:\\shared");
     private static String userId=null;
+
+
+//--------------------------------------
+//    파일 경로 동적으로 읽은 후 table 생성
+//--------------------------------------
+
 
     @Autowired
     public FileReadServiceIm(CsvToSqlRepository db) {
@@ -37,19 +41,17 @@ public class FileReadServiceIm implements FileReadService {
         String fileName = null;
         File dir = new File(path);
         File[] fileList = dir.listFiles();
-        List<String> flist = new ArrayList<>();
 
         //지정한 경로 내 파일 이름 읽기
         for (File fname : fileList) {
             if (fname.isFile()) {
                 fileName = fname.getName();
-                flist.add(fileName);
                 String fileFullName = path + "\\"+ fileName;
                 dbConnect(fileName,fileFullName);
             }
         }
 
-        System.out.println(fileName);
+        System.out.println("Upload Data Successful");
     }
 
 
@@ -80,8 +82,8 @@ public class FileReadServiceIm implements FileReadService {
 
 
         //TableInfo 속성 값 추가
-        TableInfoServiceIm idb = new TableInfoServiceIm();
-        idb.addTableInfoData(userId, tableName);
+        TableInfoServiceIm tidb = new TableInfoServiceIm();
+        tidb.addTableInfoData(userId, tableName);
     }
 
 

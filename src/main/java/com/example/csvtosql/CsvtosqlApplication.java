@@ -12,9 +12,6 @@ import javax.annotation.Resource;
 @EnableJpaRepositories
 public class CsvtosqlApplication {
 
-    @Resource
-    FileReadService fileReadService;
-
     public static void main(String[] args) {
 
         SpringApplication.run(CsvtosqlApplication.class, args);

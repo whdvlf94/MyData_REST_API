@@ -23,6 +23,10 @@ public class TableInfoServiceIm implements TableInfoService{
     private static TableInfoRepository repository;
 
 
+//-------------------------------
+//  사용자의 table(CSV to MySQL) 정보
+//-------------------------------
+
     //기본 생성자(Default Constructor)
     public TableInfoServiceIm() {
     }

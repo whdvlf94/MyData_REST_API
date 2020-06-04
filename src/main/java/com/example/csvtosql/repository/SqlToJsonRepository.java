@@ -21,8 +21,9 @@ public class SqlToJsonRepository {
     private static ResultSet rs;
     private static Statement stmt;
 
-
-
+//-------------------------------
+//      JSON 형식으로 데이터 호출
+//-------------------------------
     @Autowired
     public SqlToJsonRepository(
             @Value("${spring.datasource.url}") String url,

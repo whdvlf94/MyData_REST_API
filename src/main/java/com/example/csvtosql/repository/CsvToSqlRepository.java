@@ -20,7 +20,10 @@ public class CsvToSqlRepository {
     private static ResultSet rs;
     private static Statement stmt;
 
-    //기본 생성자(Default Constructor)
+//-------------------------------
+//      CSV file Table 저장
+//-------------------------------
+
     public CsvToSqlRepository() {
     }
 
@@ -48,9 +51,9 @@ public class CsvToSqlRepository {
     }
 
 
-
     //테이블 생성
     public void createTable(String tableName, String columns) throws SQLException {
+
         String[] cols = columns.split(",");
         String sqlCreate = "CREATE TABLE IF NOT EXISTS " + tableName + " (ID int NOT NULL AUTO_INCREMENT,";
         for (int i = 0; i < cols.length; i++) {
@@ -71,7 +74,7 @@ public class CsvToSqlRepository {
         Statement stm = (Statement) con.createStatement();
         int executeUpdate = stm.executeUpdate(query);
 
-        System.out.println("Success Add Data");
+//        System.out.println("Success Add Data");
     }
 
 

@@ -11,6 +11,10 @@ public class KeyInfoEntity {
 
     //nullable = false 추가할 것
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
     private String userId;
 
     @Column

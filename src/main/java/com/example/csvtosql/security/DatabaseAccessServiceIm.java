@@ -1,17 +1,19 @@
 package com.example.csvtosql.security;
 
+import com.example.csvtosql.entity.KeyInfoEntity;
 import com.example.csvtosql.entity.KeyInfoRepository;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Service
-public class DatabaseAccess implements DatabaseAccessService {
+public class DatabaseAccessServiceIm implements DatabaseAccessService {
 
     private static String url;
     private static String userName;
@@ -20,16 +22,21 @@ public class DatabaseAccess implements DatabaseAccessService {
     private static Connection con;
     private static Environment env;
     private static KeyInfoRepository repository;
+    private static ResultSet rs;
+    private static Statement stmt;
 
 
+//-------------------------------
+//     데이터 접근 권한 설정(UUID)
+//-------------------------------
 
     //기본 생성자(Default Constructor)
-    public DatabaseAccess() {
+    public DatabaseAccessServiceIm() {
     }
 
 
     @Autowired
-    public DatabaseAccess(
+    public DatabaseAccessServiceIm(
             @Value("${spring.datasource.url}") String url,
             @Value("${spring.datasource.username}") String userName,
             @Value("${spring.datasource.password}") String password,
@@ -54,10 +61,16 @@ public class DatabaseAccess implements DatabaseAccessService {
         con = DriverManager.getConnection(url, userName, password);
     }
 
-    public void compareUuid(String userId, String uuid) {
+    //사용자가 입력한 Key 값이 DB에 저장되어 있는 Key값과 다를 경우 데이터 조회 불가
+    @Override
+    public String compareUuid(String userUuid) {
 
-        repository.findByUserId(userId);
+        String uuid = repository.findById((long) 1).get().getUuid();
 
-        System.out.println(repository.findByUserId(userId));
+        if(userUuid.equals(uuid)) {
+            return "1";
+        } else
+            return "";
     }
+
 }

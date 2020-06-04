@@ -25,6 +25,10 @@ public class KeyInfoServiceIm implements KeyInfoService {
     private static KeyInfoRepository repository;
 
 
+//-------------------------------
+//  사용자 Key(UUID) 정보 table
+//-------------------------------
+
 
     //기본 생성자(Default Constructor)
     public KeyInfoServiceIm() {
