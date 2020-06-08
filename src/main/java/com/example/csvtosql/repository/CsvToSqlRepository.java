@@ -78,6 +78,16 @@ public class CsvToSqlRepository {
     }
 
 
+    //테이블 삭제
+    public void deleteData(String tableName) throws SQLException {
+        String query = "drop table " + tableName;
+        Statement stm = (Statement) con.createStatement();
+        stm.executeUpdate(query);
+
+        System.out.println("Delete Table");
+    }
+
+
     //데이터 타입 설정
     public String checkType(String columnName) {
         Scanner sc = new Scanner(columnName);

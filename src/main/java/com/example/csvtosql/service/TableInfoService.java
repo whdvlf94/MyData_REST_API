@@ -10,4 +10,6 @@ public interface TableInfoService {
 
     TableInfoEntity addTableInfoData(String userId, String tableName);
 
+    void deleteTableInfoData(String tableName) throws SQLException;
+
 }

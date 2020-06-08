@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TableInfoServiceIm implements TableInfoService{
@@ -72,5 +74,28 @@ public class TableInfoServiceIm implements TableInfoService{
 
         return repository.save(tableInfoEntity);
     }
+
+    //테이블 및 테이블 info 삭제
+    @Override
+    public void deleteTableInfoData(String tableName) throws SQLException {
+//        테이블 삭제 시간 기록 코드
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String enddate = formatter.format(new Date());
+//        String query = "UPDATE table_info SET end_table_time = " + '"'+enddate+'"';
+//        query += " WHERE id = " + String.valueOf(id);
+
+
+        Long id = repository.findByTableName(tableName).get(0).getID();
+
+        String query = "DELETE FROM table_info";
+        query += " WHERE id = " + String.valueOf(id);
+
+        Statement stm = (Statement) con.createStatement();
+        stm.executeUpdate(query);
+
+    }
+
+
+
 
 }

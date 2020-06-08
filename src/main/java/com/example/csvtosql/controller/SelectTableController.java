@@ -1,7 +1,9 @@
 package com.example.csvtosql.controller;
 
+import com.example.csvtosql.repository.CsvToSqlRepository;
 import com.example.csvtosql.repository.SqlToJsonRepository;
 import com.example.csvtosql.security.DatabaseAccessServiceIm;
+import com.example.csvtosql.service.TableInfoServiceIm;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,17 @@ import java.util.*;
 @RequestMapping("/{tableName}")
 public class SelectTableController {
 
+    @Autowired
+    private CsvToSqlRepository csvToSqlRepository;
 
     @Autowired
     private SqlToJsonRepository repository;
 
     @Autowired
     private DatabaseAccessServiceIm databaseAccessServiceIm;
+
+    @Autowired
+    private TableInfoServiceIm tableInfoServiceIm;
 
     //테이블 전체 조회
     //사용자가 입력한 key 값이 발급받은 Key 값과 다를 경우 데이터가 화면에 출력되지 않도록 설정
@@ -81,6 +88,24 @@ public class SelectTableController {
         } else {
             return "Wrong Key Value!!";
         }
+
+    }
+
+    @DeleteMapping(value = "/delete")
+    public String deleteTable(@PathVariable String tableName, @RequestParam("key") String uuid) throws SQLException, JSONException, ClassNotFoundException {
+        String value = databaseAccessServiceIm.compareUuid(uuid);
+
+        if(value == "1") {
+           csvToSqlRepository.deleteData(tableName);
+
+            tableInfoServiceIm.deleteTableInfoData(tableName);
+
+
+           return tableName +" table was dropped";
+        } else {
+            return "Wrong Key Value!!";
+        }
+
 
     }
 
