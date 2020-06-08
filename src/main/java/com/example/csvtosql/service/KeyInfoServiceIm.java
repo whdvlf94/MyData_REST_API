@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -44,7 +46,7 @@ public class KeyInfoServiceIm implements KeyInfoService {
             KeyInfoRepository repository,
             Environment env) throws SQLException, ClassNotFoundException {
 
-        this.url= url;
+        this.url = url;
         this.userName = userName;
         this.password = password;
         this.driverName = driverName;
@@ -63,11 +65,12 @@ public class KeyInfoServiceIm implements KeyInfoService {
 
     //TableInfo 속성 추가
     @Override
-    public KeyInfoEntity addKeyInfoData(String userId, String userKey){
+    public KeyInfoEntity addKeyInfoData(String userId, String userKey) {
+
         KeyInfoEntity keyInfoEntity = new KeyInfoEntity();
+
         keyInfoEntity.setUserId(userId);
         keyInfoEntity.setUuid(userKey);
-
         return repository.save(keyInfoEntity);
     }
 }

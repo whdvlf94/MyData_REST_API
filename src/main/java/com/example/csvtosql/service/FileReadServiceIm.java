@@ -1,5 +1,6 @@
 package com.example.csvtosql.service;
 
+import com.example.csvtosql.entity.TableInfoRepository;
 import com.example.csvtosql.repository.CsvToSqlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,13 +10,17 @@ import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @Service
 public class FileReadServiceIm implements FileReadService {
 
     CsvToSqlRepository db;
+    TableInfoRepository tableInfoRepository;
 
+//    private Path root = Paths.get("/var/lib/restapi");
     private Path root = Paths.get("C:\\shared");
     private static String userId=null;
 
@@ -26,34 +31,56 @@ public class FileReadServiceIm implements FileReadService {
 
 
     @Autowired
-    public FileReadServiceIm(CsvToSqlRepository db) {
+    public FileReadServiceIm(CsvToSqlRepository db, TableInfoRepository tableInfoRepository) {
         this.db = db;
+        this.tableInfoRepository = tableInfoRepository;
     }
 
 
     @Override
     public void filePath(String user) throws SQLException, FileNotFoundException {
 
+
         //파일 경로 지정
+//        String path = new StringBuilder().append(root).append("/").append(user).toString();
         String path = new StringBuilder().append(root).append("\\").append(user).toString();
+
+//         path = C:\\shared\\user2
         userId = user.toString();
 
         String fileName = null;
         File dir = new File(path);
         File[] fileList = dir.listFiles();
 
+
+        List<String> tableNameList = new ArrayList<>();
+        for(int i=0; i<tableInfoRepository.findAll().size();i++){
+
+            String tableName = tableInfoRepository.findByUserId(user).get(i).getTableName();
+            tableNameList.add(tableName);
+
+        }
+
         //지정한 경로 내 파일 이름 읽기
         for (File fname : fileList) {
             if (fname.isFile()) {
                 fileName = fname.getName();
+//                String fileFullName = path + "/"+ fileName;
                 String fileFullName = path + "\\"+ fileName;
-                dbConnect(fileName,fileFullName);
+
+
+                String realFileName = fileName.substring(0,fileName.length()-4);
+
+                if (!tableNameList.contains(realFileName)){
+                    dbConnect(fileName,fileFullName);
+                }
+                continue;
+
             }
         }
 
         System.out.println("Upload Data Successful");
     }
-
 
 
     @Override
