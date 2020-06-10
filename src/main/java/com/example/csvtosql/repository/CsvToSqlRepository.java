@@ -33,9 +33,10 @@ public class CsvToSqlRepository {
             @Value("${spring.datasource.url}") String url,
             @Value("${spring.datasource.username}") String userName,
             @Value("${spring.datasource.password}") String password,
-            @Value("${spring.datasource.driver-class-name}") String driverName) throws SQLException, ClassNotFoundException {
+        @Value("${spring.datasource.driverClassName}") String driverName) throws SQLException, ClassNotFoundException {
 
-        this.url= url;
+
+            this.url= url;
         this.userName = userName;
         this.password = password;
         this.driverName = driverName;
@@ -62,6 +63,8 @@ public class CsvToSqlRepository {
         sqlCreate += "PRIMARY KEY (ID))";
         Statement stmt = con.createStatement();
         stmt.execute(sqlCreate);
+
+
     }
 
 
@@ -74,7 +77,6 @@ public class CsvToSqlRepository {
         Statement stm = (Statement) con.createStatement();
         int executeUpdate = stm.executeUpdate(query);
 
-//        System.out.println("Success Add Data");
     }
 
 
@@ -83,6 +85,8 @@ public class CsvToSqlRepository {
         String query = "drop table " + tableName;
         Statement stm = (Statement) con.createStatement();
         stm.executeUpdate(query);
+
+
 
         System.out.println("Delete Table");
     }

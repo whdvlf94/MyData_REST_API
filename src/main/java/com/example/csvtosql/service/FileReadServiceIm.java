@@ -20,9 +20,9 @@ public class FileReadServiceIm implements FileReadService {
     CsvToSqlRepository db;
     TableInfoRepository tableInfoRepository;
 
-//    private Path root = Paths.get("/var/lib/restapi");
-    private Path root = Paths.get("C:\\shared");
-    private static String userId=null;
+//    private Path root = Paths.get("/var/lib/shared_data"); // [Linux version]
+        private Path root = Paths.get("C:\\shared"); //[Windows version]
+    private static String userId = null;
 
 
 //--------------------------------------
@@ -42,10 +42,10 @@ public class FileReadServiceIm implements FileReadService {
 
 
         //파일 경로 지정
-//        String path = new StringBuilder().append(root).append("/").append(user).toString();
-        String path = new StringBuilder().append(root).append("\\").append(user).toString();
-
+//        String path = new StringBuilder().append(root).append("/").append(user).toString(); // [Linux version]
+        String path = new StringBuilder().append(root).append("\\").append(user).toString(); //[Windows version]
 //         path = C:\\shared\\user2
+
         userId = user.toString();
 
         String fileName = null;
@@ -54,7 +54,7 @@ public class FileReadServiceIm implements FileReadService {
 
 
         List<String> tableNameList = new ArrayList<>();
-        for(int i=0; i<tableInfoRepository.findAll().size();i++){
+        for (int i = 0; i < tableInfoRepository.findAll().size(); i++) {
 
             String tableName = tableInfoRepository.findByUserId(user).get(i).getTableName();
             tableNameList.add(tableName);
@@ -65,21 +65,21 @@ public class FileReadServiceIm implements FileReadService {
         for (File fname : fileList) {
             if (fname.isFile()) {
                 fileName = fname.getName();
-//                String fileFullName = path + "/"+ fileName;
-                String fileFullName = path + "\\"+ fileName;
+//                String fileFullName = path + "/" + fileName; // [Linux version]
+                String fileFullName = path + "\\"+ fileName; //[Windows version]
 
 
-                String realFileName = fileName.substring(0,fileName.length()-4);
+                String realFileName = fileName.substring(0, fileName.length() - 4);
 
-                if (!tableNameList.contains(realFileName)){
-                    dbConnect(fileName,fileFullName);
+                if (!tableNameList.contains(realFileName)) {
+                    dbConnect(fileName, fileFullName);
                 }
                 continue;
 
             }
         }
 
-        System.out.println("Upload Data Successful");
+        System.out.println("Upload Data Successful!");
     }
 
 

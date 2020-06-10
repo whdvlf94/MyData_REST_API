@@ -2,8 +2,10 @@ package com.example.csvtosql.controller;
 
 import com.example.csvtosql.entity.KeyInfoRepository;
 import com.example.csvtosql.service.FileReadService;
+import com.example.csvtosql.service.KeyInfoService;
 import com.example.csvtosql.service.KeyInfoServiceIm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,13 +14,14 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 public class ReadController {
 
     @Autowired
     private FileReadService fileReadService;
 
     @Autowired
-    private KeyInfoServiceIm keyInfoServiceIm;
+    private KeyInfoService keyInfoService;
 
     @Autowired
     private KeyInfoRepository keyInfoRepository;
@@ -30,7 +33,7 @@ public class ReadController {
 
 
         if (keyInfoRepository.findAll().size() == 0) {
-        keyInfoServiceIm.addKeyInfoData(user,userkey);}
+        keyInfoService.addKeyInfoData(user,userkey);}
 
     }
 

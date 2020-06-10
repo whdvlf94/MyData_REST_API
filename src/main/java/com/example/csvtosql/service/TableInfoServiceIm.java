@@ -39,7 +39,7 @@ public class TableInfoServiceIm implements TableInfoService{
             @Value("${spring.datasource.url}") String url,
             @Value("${spring.datasource.username}") String userName,
             @Value("${spring.datasource.password}") String password,
-            @Value("${spring.datasource.driver-class-name}") String driverName,
+            @Value("${spring.datasource.driverClassName}") String driverName,
             TableInfoRepository repository,
             Environment env) throws SQLException, ClassNotFoundException {
 
@@ -78,12 +78,6 @@ public class TableInfoServiceIm implements TableInfoService{
     //테이블 및 테이블 info 삭제
     @Override
     public void deleteTableInfoData(String tableName) throws SQLException {
-//        테이블 삭제 시간 기록 코드
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String enddate = formatter.format(new Date());
-//        String query = "UPDATE table_info SET end_table_time = " + '"'+enddate+'"';
-//        query += " WHERE id = " + String.valueOf(id);
-
 
         Long id = repository.findByTableName(tableName).get(0).getID();
 
@@ -92,6 +86,7 @@ public class TableInfoServiceIm implements TableInfoService{
 
         Statement stm = (Statement) con.createStatement();
         stm.executeUpdate(query);
+
 
     }
 

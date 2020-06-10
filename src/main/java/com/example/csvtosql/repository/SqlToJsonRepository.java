@@ -21,7 +21,7 @@ public class SqlToJsonRepository {
     private static ResultSet rs;
     private static Statement stmt;
 
-//-------------------------------
+    //-------------------------------
 //      JSON 형식으로 데이터 호출
 //-------------------------------
     @Autowired
@@ -29,9 +29,9 @@ public class SqlToJsonRepository {
             @Value("${spring.datasource.url}") String url,
             @Value("${spring.datasource.username}") String userName,
             @Value("${spring.datasource.password}") String password,
-            @Value("${spring.datasource.driver-class-name}") String driverName) throws SQLException, ClassNotFoundException {
+            @Value("${spring.datasource.driverClassName}") String driverName) throws SQLException, ClassNotFoundException {
 
-        this.url= url;
+        this.url = url;
         this.userName = userName;
         this.password = password;
         this.driverName = driverName;
@@ -55,11 +55,12 @@ public class SqlToJsonRepository {
         String sql = "SELECT * FROM ";
         sql += tableName;
         rs = stmt.executeQuery(sql);
+
         Integer i = 0;
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
 
-        while (rs.next()){
+        while (rs.next()) {
             JSONObject jsonObject = new JSONObject();
             for (int ii = 1; ii < columnCount + 1; ii++) {
                 String alias = rsmd.getColumnLabel(ii);
@@ -81,23 +82,25 @@ public class SqlToJsonRepository {
         Integer i = 0;
 
         String sql = "SELECT *";
-        sql += " FROM "+tableName;
+        sql += " FROM " + tableName;
         sql += " where ";
         int j = 0;
-        for(String mapkey : queryMap.keySet()){
-            sql += mapkey + " = " +  '"' + queryMap.get(mapkey).toString() + '"';
-            j ++;
+        for (String mapkey : queryMap.keySet()) {
+            sql += mapkey + " = " + '"' + queryMap.get(mapkey).toString() + '"';
+            j++;
             if (queryMap.size() != j) {
                 sql += " AND ";
                 continue;
             }
         }
         rs = stmt.executeQuery(sql);
+
+
         ResultSetMetaData rsmdAll = rs.getMetaData();
         int columnCountAll = rsmdAll.getColumnCount();
 
         jsonArray = new JSONArray();
-        while (rs.next()){
+        while (rs.next()) {
             JSONObject jsonObject = new JSONObject();
             for (int ii = 1; ii < columnCountAll + 1; ii++) {
                 String alias = rsmdAll.getColumnLabel(ii);

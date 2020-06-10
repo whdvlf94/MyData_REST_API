@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/{tableName}")
 public class SelectTableController {
 
@@ -69,9 +70,9 @@ public class SelectTableController {
 
             List<String> queryList = new ArrayList<>(Arrays.asList(queryString.split("&")));
 
-            for(Iterator<String> it = queryList.iterator(); it.hasNext();){
+            for (Iterator<String> it = queryList.iterator(); it.hasNext(); ) {
                 String listValue = it.next();
-                if(listValue.startsWith("k")){
+                if (listValue.startsWith("k")) {
                     it.remove();
                 }
             }
@@ -95,13 +96,10 @@ public class SelectTableController {
     public String deleteTable(@PathVariable String tableName, @RequestParam("key") String uuid) throws SQLException, JSONException, ClassNotFoundException {
         String value = databaseAccessServiceIm.compareUuid(uuid);
 
-        if(value == "1") {
-           csvToSqlRepository.deleteData(tableName);
-
+        if (value == "1") {
+            csvToSqlRepository.deleteData(tableName);
             tableInfoServiceIm.deleteTableInfoData(tableName);
-
-
-           return tableName +" table was dropped";
+            return tableName + " table was dropped";
         } else {
             return "Wrong Key Value!!";
         }

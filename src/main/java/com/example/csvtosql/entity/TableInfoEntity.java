@@ -26,7 +26,5 @@ public class TableInfoEntity implements Serializable {
     @Column(nullable = false, length = 50)
     private String createTableTime;
 
-    @Column
-    private String EndTableTime;
 
 }
